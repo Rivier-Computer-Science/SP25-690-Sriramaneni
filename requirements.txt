@@ -4,3 +4,4 @@ librosa
 torch
 scikit-learn
 matplotlib
+pyyaml
