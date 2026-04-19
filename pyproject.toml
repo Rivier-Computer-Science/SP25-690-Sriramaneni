@@ -1,0 +1,22 @@
+[project]
+name = "sp25-690-sriramaneni"
+version = "0.1.0"
+description = "Emotion-aware music sentiment baseline using PyTorch."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "librosa",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pyyaml",
+    "scikit-learn",
+    "torch",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = false
