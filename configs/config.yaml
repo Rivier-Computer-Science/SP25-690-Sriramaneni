@@ -1,19 +1,20 @@
 data:
-  csv_path: data/metadata.csv
-  audio_dir: data/audio/
-  sample_rate: 22050
+  csv_path: data/music_sentiment_dataset.csv
 
 features:
-  n_mfcc: 40
-  use_mel_spectrogram: true
+  drop_columns:
+    - track_id
 
 model:
-  type: cnn   # cnn | transformer | fusion
-  num_classes: 4
+  type: mlp
+  hidden_dims: [128, 64]
+  dropout: 0.2
 
 training:
-  batch_size: 32
+  batch_size: 64
   lr: 0.001
   epochs: 20
   device: cuda
-  
+  val_size: 0.2
+  random_state: 42
+  checkpoint_path: artifacts/best_mlp.pt
