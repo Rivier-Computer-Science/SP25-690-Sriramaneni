@@ -207,8 +207,7 @@ def compute_class_weights(labels, num_classes, device):
     return torch.tensor(weights, dtype=torch.float32, device=device)
 
 
-def main():
-    config = Config("configs/config.yaml").config
+def run_training(config):
     model_type = config["model"].get("type", "mlp").lower()
 
     requested_device = config["training"]["device"]
@@ -323,6 +322,19 @@ def main():
     print(best_metrics["confusion_matrix"])
     print("\nClassification report:")
     print(best_metrics["classification_report"])
+
+    return {
+        "model_type": model_type,
+        "checkpoint_path": checkpoint_path,
+        "feature_description": describe_feature_names(feature_names),
+        "class_weights": class_weights.cpu().tolist(),
+        "best_metrics": best_metrics,
+    }
+
+
+def main():
+    config = Config("configs/config.yaml").config
+    return run_training(config)
 
 
 if __name__ == "__main__":

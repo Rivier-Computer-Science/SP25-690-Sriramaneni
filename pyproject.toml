@@ -16,6 +16,7 @@ dependencies = [
 
 [project.scripts]
 main = "main:main"
+compare-models = "compare_models:main"
 
 [build-system]
 requires = ["setuptools>=69"]
@@ -25,7 +26,7 @@ build-backend = "setuptools.build_meta"
 package = true
 
 [tool.setuptools]
-py-modules = ["main"]
+py-modules = ["main", "compare_models"]
 
 [tool.setuptools.packages.find]
 where = ["."]
