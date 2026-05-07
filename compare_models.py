@@ -75,6 +75,43 @@ def build_markdown_table(results):
     return "\n".join(lines) + "\n"
 
 
+def build_detailed_markdown(results):
+    lines = [
+        "# Detailed Comparison Results",
+        "",
+        "## Summary Table",
+        "",
+        "| Model | Val Accuracy | Macro F1 | Checkpoint |",
+        "|---|---:|---:|---|",
+    ]
+    for result in results:
+        metrics = result["best_metrics"]
+        lines.append(
+            "| "
+            f"{result['model_type']} | "
+            f"{metrics['accuracy']:.4f} | "
+            f"{metrics['macro_f1']:.4f} | "
+            f"{result['checkpoint_path']} |"
+        )
+
+    for result in results:
+        metrics = result["best_metrics"]
+        lines.extend(
+            [
+                "",
+                f"## {result['model_type'].upper()}",
+                "",
+                f"- Feature input: {result['feature_description']}",
+                f"- Best validation accuracy: {metrics['accuracy']:.4f}",
+                f"- Best validation macro F1: {metrics['macro_f1']:.4f}",
+                f"- Checkpoint: `{result['checkpoint_path']}`",
+                f"- Confusion matrix: `{format_confusion_matrix(metrics['confusion_matrix'])}`",
+            ]
+        )
+
+    return "\n".join(lines) + "\n"
+
+
 def print_detailed_summary(results):
     print("\nDetailed Summary:")
     for result in results:
@@ -92,9 +129,11 @@ def write_results(results, output_dir):
 
     markdown_path = output_path / "comparison_results.md"
     csv_path = output_path / "comparison_results.csv"
+    detailed_markdown_path = output_path / "comparison_output.md"
 
     markdown_content = build_markdown_table(results)
     markdown_path.write_text(markdown_content, encoding="utf-8")
+    detailed_markdown_path.write_text(build_detailed_markdown(results), encoding="utf-8")
 
     with csv_path.open("w", newline="", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
@@ -123,6 +162,7 @@ def write_results(results, output_dir):
 
     print(f"\nSaved markdown results to: {markdown_path}")
     print(f"Saved CSV results to: {csv_path}")
+    print(f"Saved detailed output to: {detailed_markdown_path}")
 
 
 def main():
